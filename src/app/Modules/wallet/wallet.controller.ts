@@ -7,7 +7,7 @@ import { StatusCodes } from "http-status-codes";
 const getAllWallets = catchAsync(async (req: Request, res: Response) => {
   const query = req.query;
   const result = await WalletService.getAllWallets(
-    query as Record<string, string>
+    query as Record<string, string>,
   );
 
   sendResponse(res, {
@@ -65,9 +65,6 @@ const blockWallet = catchAsync(async (req: Request, res: Response) => {
   const { walletId } = req.body;
 
   const wallet = await WalletService.blockWallet(walletId);
-
-  wallet.status = "blocked";
-  await wallet.save();
 
   sendResponse(res, {
     statusCode: 200,

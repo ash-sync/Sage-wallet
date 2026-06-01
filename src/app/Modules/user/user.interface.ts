@@ -13,11 +13,13 @@ export enum IsActive {
 }
 
 export interface IAuthProvider {
-  provider: "credentials";
+  provider: "google" | "credentials";
   providerID: string;
 }
 
 export interface IUser {
+  auths: any;
+  [x: string]: any;
   _id?: Types.ObjectId | string;
   name: string;
   email: string;
@@ -29,5 +31,6 @@ export interface IUser {
   role: Role;
   wallet?: Types.ObjectId; // referencing the wallet
   agentApproved?: boolean;
+  auths: IAuthProvider[];
   agentCommissionRate?: number;
 }

@@ -4,7 +4,6 @@ import { TransactionService } from "./transaction.service";
 import { sendResponse } from "../../utils/sendResponse";
 import AppError from "../../errorHelpers/AppError";
 import { StatusCodes } from "http-status-codes";
-import { success } from "zod";
 
 interface JWTPayloadWithId {
   userId: string;
@@ -19,7 +18,7 @@ const getTransactionHistory = catchAsync(
     if (!user.userId) {
       throw new AppError(
         StatusCodes.UNAUTHORIZED,
-        "User ID not found in payload"
+        "User ID not found in payload",
       );
     }
 
@@ -27,7 +26,7 @@ const getTransactionHistory = catchAsync(
 
     const result = await TransactionService.getTransactionHistory(
       user.userId,
-      query
+      query,
     );
 
     sendResponse(res, {
@@ -37,13 +36,13 @@ const getTransactionHistory = catchAsync(
       data: result.data,
       meta: result.meta,
     });
-  }
+  },
 );
 
 const getAllTransaction = catchAsync(async (req: Request, res: Response) => {
   const query = req.query;
   const result = await TransactionService.getAllTransaction(
-    query as Record<string, string>
+    query as Record<string, string>,
   );
 
   sendResponse(res, {

@@ -14,6 +14,9 @@ interface EnvConfig {
   EXPRESS_SESSION_SECRET: string;
   FRONTEND_URL: string;
   INITIAL_BALANCE: string;
+  GOOGLE_CLIENT_SECRET: string;
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CALLBACK_URL: string;
 
   EMAIL_SENDER: {
     SMTP_USER: string;
@@ -23,9 +26,9 @@ interface EnvConfig {
     SMTP_FROM: string;
   };
   REDIS_HOST: string;
-REDIS_PORT: string;
-REDIS_USERNAME: string;
-REDIS_PASSWORD: string;
+  REDIS_PORT: string;
+  REDIS_USERNAME: string;
+  REDIS_PASSWORD: string;
 }
 
 const loadEnvVariables = (): EnvConfig => {
@@ -40,6 +43,9 @@ const loadEnvVariables = (): EnvConfig => {
     "JWT_REFRESH_EXPIRES",
     "EXPRESS_SESSION_SECRET",
     "FRONTEND_URL",
+    "GOOGLE_CLIENT_SECRET",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CALLBACK_URL",
     "SMTP_USER",
     "SMTP_HOST",
     "SMTP_PORT",
@@ -47,9 +53,9 @@ const loadEnvVariables = (): EnvConfig => {
     "SMTP_FROM",
     "INITIAL_BALANCE",
     "REDIS_HOST",
-"REDIS_PORT",
-"REDIS_USERNAME",
-"REDIS_PASSWORD"
+    "REDIS_PORT",
+    "REDIS_USERNAME",
+    "REDIS_PASSWORD",
   ];
 
   requiredEnvVariables.forEach((key) => {
@@ -71,6 +77,9 @@ const loadEnvVariables = (): EnvConfig => {
     EXPRESS_SESSION_SECRET: process.env.EXPRESS_SESSION_SECRET as string,
     FRONTEND_URL: process.env.FRONTEND_URL as string,
     INITIAL_BALANCE: process.env.INITIAL_BALANCE as string,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
+    GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL as string,
 
     EMAIL_SENDER: {
       SMTP_USER: process.env.SMTP_USER as string,
@@ -81,9 +90,9 @@ const loadEnvVariables = (): EnvConfig => {
     },
 
     REDIS_HOST: process.env.REDIS_HOST as string,
-REDIS_PORT: process.env.REDIS_PORT as string,
-REDIS_USERNAME: process.env.REDIS_USERNAME as string,
-REDIS_PASSWORD: process.env.REDIS_PASSWORD as string
+    REDIS_PORT: process.env.REDIS_PORT as string,
+    REDIS_USERNAME: process.env.REDIS_USERNAME as string,
+    REDIS_PASSWORD: process.env.REDIS_PASSWORD as string,
   };
 };
 

@@ -8,6 +8,7 @@ import passport from "passport";
 import AppError from "../../errorHelpers/AppError";
 import { setAuthCookie } from "../../utils/setCookie";
 import { JwtPayload } from "jsonwebtoken";
+import { envVars } from "../../config/env";
 
 const credentialsLogin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -36,7 +37,7 @@ const credentialsLogin = catchAsync(
         },
       });
     })(req, res, next);
-  }
+  },
 );
 
 const getNewAccessToken = catchAsync(
@@ -45,7 +46,7 @@ const getNewAccessToken = catchAsync(
     if (!refreshToken) {
       throw new AppError(
         StatusCodes.BAD_REQUEST,
-        "No refresh token recieved from cookies"
+        "No refresh token recieved from cookies",
       );
     }
 
@@ -59,7 +60,29 @@ const getNewAccessToken = catchAsync(
       message: "New Access token retrived successfully",
       data: tokenInfo,
     });
-  }
+  },
+);
+
+const googleCallBackController = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    let redirectTo = req.query.state ? (req.query.state as string) : "";
+
+    if (redirectTo.startsWith("/")) {
+      redirectTo = redirectTo.slice(1);
+    }
+
+    const user = req.user;
+
+    if (!user) {
+      throw new AppError(StatusCodes.NOT_FOUND, "User Not Found");
+    }
+
+    const tokenInfo = await createUserTokens(user);
+
+    setAuthCookie(res, tokenInfo);
+
+    res.redirect(`${envVars.FRONTEND_URL}/${redirectTo}`);
+  },
 );
 
 const changePassword = catchAsync(
@@ -71,7 +94,7 @@ const changePassword = catchAsync(
     await AuthServices.changePassword(
       oldPassword,
       newPassword,
-      decodedToken as JwtPayload
+      decodedToken as JwtPayload,
     );
 
     sendResponse(res, {
@@ -80,7 +103,7 @@ const changePassword = catchAsync(
       message: "Password changed Successfully",
       data: null,
     });
-  }
+  },
 );
 
 const logOut = catchAsync(
@@ -102,7 +125,7 @@ const logOut = catchAsync(
       message: "User logged out Successfully",
       data: null,
     });
-  }
+  },
 );
 
 const forgotPassword = catchAsync(
@@ -117,7 +140,7 @@ const forgotPassword = catchAsync(
       message: "Email sent Successfully",
       data: null,
     });
-  }
+  },
 );
 
 export const AuthControllers = {
@@ -126,4 +149,5 @@ export const AuthControllers = {
   changePassword,
   logOut,
   forgotPassword,
+  googleCallBackController,
 };

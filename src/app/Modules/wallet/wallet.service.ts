@@ -69,7 +69,7 @@ const addMoney = async (userId: string, amount: number) => {
           referenceId: uuidv4(),
         },
       ],
-      { session }
+      { session },
     );
 
     await session.commitTransaction();
@@ -79,10 +79,9 @@ const addMoney = async (userId: string, amount: number) => {
       balance: wallet.balance,
     };
   } catch (error) {
-    console.log(error);
     await session.abortTransaction();
     session.endSession();
-    throw new AppError(StatusCodes.CONFLICT, "Add money failed");
+    throw error;
   }
 };
 
@@ -124,7 +123,7 @@ const withdrawMoney = async (userId: string, amount: number) => {
           referenceId: uuidv4(),
         },
       ],
-      { session }
+      { session },
     );
 
     await session.commitTransaction();
@@ -138,10 +137,7 @@ const withdrawMoney = async (userId: string, amount: number) => {
     console.log(error);
     await session.abortTransaction();
     session.endSession();
-    throw new AppError(
-      StatusCodes.BAD_REQUEST,
-      `Withdrawal ${TRANSACTION_STATUS.FAILED}`
-    );
+    throw error;
   }
 };
 

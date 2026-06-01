@@ -10,7 +10,7 @@ export const router = Router();
 
 const moduleRoutes = [
   {
-    path: "/users",
+    path: "/user",
     route: UserRoutes,
   },
   {
@@ -28,7 +28,7 @@ const moduleRoutes = [
   {
     path: "/otp",
     route: OtpRoutes,
-  }
+  },
 ];
 
 moduleRoutes.forEach((route) => {
